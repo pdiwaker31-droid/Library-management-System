@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LibraCore — Library Management System</title>
+<style>
+  
+:root{--bg:#0b0f1a;--surface:#111827;--surface2:#1a2235;--border:rgba(255,255,255,.08);--accent:#00d4aa;--blue:#3b82f6;--amber:#f59e0b;--red:#ef4444;--text:#e8edf5;--muted:#7d8aa5}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}.sidebar{width:245px;background:var(--surface);border-right:1px solid var(--border);position:fixed;inset:0 auto 0 0;z-index:10}.brand{padding:26px 22px;border-bottom:1px solid var(--border)}.brand b{font-size:1.45rem}.brand small{display:block;color:var(--muted);margin-top:5px}.nav{padding:18px 12px}.nav h5{color:var(--muted);font-size:11px;letter-spacing:1.5px;margin:0 10px 8px}.nav button{width:100%;text-align:left;border:0;background:transparent;color:var(--muted);padding:11px 12px;border-radius:8px;margin:2px 0;cursor:pointer;font-size:14px}.nav button:hover,.nav button.active{background:rgba(0,212,170,.12);color:var(--accent)}.main{margin-left:245px;width:calc(100% - 245px)}.topbar{height:65px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;position:sticky;top:0;z-index:5}.topbar h3{flex:1}.page{display:none;padding:28px}.page.active{display:block}.sub{color:var(--muted);font-size:13px;margin:6px 0 22px}.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:22px}.stat,.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}.stat{padding:18px}.stat strong{display:block;font-size:25px;margin:10px 0 4px}.stat span{font-size:12px;color:var(--muted)}.card{overflow:hidden;margin-bottom:18px}.cardhead{padding:17px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center}.cardhead h3{flex:1;font-size:16px}.body{padding:20px}.toolbar{display:flex;gap:10px;margin-bottom:16px}.toolbar input{flex:1}.input,select,textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:7px;width:100%;outline:none}.btn{border:0;border-radius:7px;padding:10px 15px;cursor:pointer;font-weight:bold}.primary{background:var(--accent);color:#06100e}.ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.danger{background:var(--red);color:#fff}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 13px;border-bottom:1px solid var(--border);text-align:left}th{font-size:11px;color:var(--muted);background:var(--surface2);text-transform:uppercase}td{color:#dce2eb}.badge{padding:4px 8px;border-radius:20px;font-size:11px}.green{background:rgba(34,197,94,.15);color:#4ade80}.red{background:rgba(239,68,68,.15);color:#f87171}.amber{background:rgba(245,158,11,.15);color:#fbbf24}.blue{background:rgba(59,130,246,.15);color:#60a5fa}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px}.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:50;align-items:center;justify-content:center}.modal.open{display:flex}.modalbox{background:var(--surface);border:1px solid var(--border);width:92%;max-width:650px;max-height:90vh;overflow:auto;border-radius:13px}.modalhead{padding:18px 22px;border-bottom:1px solid var(--border);display:flex}.modalhead h3{flex:1}.modalbody{padding:22px}.modalfoot{padding:15px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}.notice{padding:12px;border-radius:8px;background:rgba(0,212,170,.08);color:#8eead8;font-size:13px;margin-bottom:15px}@media(max-width:900px){.sidebar{width:190px}.main{margin-left:190px;width:calc(100% - 190px)}.stats{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand"><div>📚 <b>S.R. LIBRARY</b></div><small>Library Management System</small></div>
+  <div class="nav">
+    <h5>OVERVIEW</h5>
+    <button class="active" onclick="showPage('dashboard',this)">▣ Dashboard</button>
+    <h5 style="margin-top:18px">MODULES</h5>
+    <button onclick="showPage('books',this)">📖 Books</button>
+    <button onclick="showPage('members',this)">👤 Members</button>
+    <button onclick="showPage('transactions',this)">🔄 Issue / Return</button>
+    <button onclick="showPage('fines',this)">₹ Fines</button>
+    <button onclick="showPage('master',this)">⚙ Master Data</button>
+  </div>
+</aside>
+<main class="main">
+  <header class="topbar"><h3 id="title">Dashboard</h3><span id="date" style="color:var(--muted);font-size:12px"></span></header>
+
+  <section id="page-dashboard" class="page active">
+    <h2>Good Morning !👋</h2><p class="sub">Overview of books, members, issues and fines.</p>
+    <div class="stats">
+      <div class="stat">📚<strong id="sBooks">0</strong><span>Book Titles</span></div>
+      <div class="stat">📦<strong id="sCopies">0</strong><span>Total Copies</span></div>
+      <div class="stat">👥<strong id="sMembers">0</strong><span>Active Members</span></div>
+      <div class="stat">🔄<strong id="sIssued">0</strong><span>Issued Books</span></div>
+      <div class="stat">⏰<strong id="sOverdue">0</strong><span>Overdue</span></div>
+      <div class="stat">₹<strong id="sFine">0</strong><span>Pending Fines</span></div>
+    </div>
+    <div class="grid2"><div class="card"><div class="cardhead"><h3>How the project works</h3></div><div class="body"><div class="notice">Member → Issue Book Copy → Return Book → Fine (if late)</div><p style="color:var(--muted);line-height:1.7;font-size:13px">Books are stored separately from physical copies. This makes it possible to keep multiple copies of the same book and track each copy's status.</p></div></div>
+    <div class="card"><div class="cardhead"><h3>Database Concepts Used</h3></div><div class="body"><p style="line-height:1.9;font-size:13px">Primary Key • Foreign Key • One-to-Many Relationship • Normalization • Views • Transactions • CRUD • JOIN • GROUP BY • Aggregate Functions</p></div></div></div>
+  </section>
+
+  <section id="page-books" class="page">
+    <h2>Books</h2><p class="sub">Search and manage book inventory.</p>
+    <div class="toolbar"><input id="bookSearch" class="input" placeholder="Search title, ISBN or author..." oninput="loadBooks()"><button class="btn primary" onclick="openBookModal()">+ Add Book</button></div>
+    <div class="card"><div class="tablewrap"><table><thead><tr><th>ID</th><th>Title</th><th>Author</th><th>Category</th><th>Copies</th><th>Available</th><th>Issued</th></tr></thead><tbody id="booksTable"></tbody></table></div></div>
+  </section>
+
+  <section id="page-members" class="page">
+    <h2>Members</h2><p class="sub">Students, teachers and staff who borrow books.</p>
+    <div class="toolbar"><input id="memberSearch" class="input" placeholder="Search member..." oninput="loadMembers()"><button class="btn primary" onclick="openMemberModal()">+ Add Member</button></div>
+    <div class="card"><div class="tablewrap"><table><thead><tr><th>Code</th><th>Name</th><th>Type</th><th>Phone</th><th>Email</th><th>Status</th></tr></thead><tbody id="membersTable"></tbody></table></div></div>
+  </section>
+
+  <section id="page-transactions" class="page">
+    <h2>Issue / Return</h2><p class="sub">Track every physical book copy issued to a member.</p>
+    <div class="toolbar"><button class="btn primary" onclick="openIssueModal()">+ Issue Book</button></div>
+    <div class="card"><div class="tablewrap"><table><thead><tr><th>Member</th><th>Book</th><th>Copy</th><th>Issue Date</th><th>Due Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="txTable"></tbody></table></div></div>
+  </section>
+
+  <section id="page-fines" class="page">
+    <h2>Fines</h2><p class="sub">Late-return fines and payments.</p>
+    <div class="card"><div class="tablewrap"><table><thead><tr><th>Member</th><th>Book</th><th>Amount</th><th>Paid</th><th>Status</th><th>Action</th></tr></thead><tbody id="finesTable"></tbody></table></div></div>
+  </section>
+
+  <section id="page-master" class="page">
+    <h2>Master Data</h2><p class="sub">Authors, categories and publishers used by the Books table.</p>
+    <div class="grid2"><div class="card"><div class="cardhead"><h3>Authors</h3></div><div class="body" id="authorsBox">Loading...</div></div><div class="card"><div class="cardhead"><h3>Categories</h3></div><div class="body" id="categoriesBox">Loading...</div></div></div>
+  </section>
+</main>
+
+<!-- ADD BOOK MODAL -->
+<div id="bookModal" class="modal"><div class="modalbox"><div class="modalhead"><h3>Add New Book</h3><button class="btn ghost" onclick="closeModal('bookModal')">✕</button></div><div class="modalbody"><form id="bookForm"><div class="formgrid"><div><label>ISBN</label><input class="input" name="isbn"></div><div><label>Title *</label><input class="input" name="title" required></div><div><label>Author *</label><select class="input" name="author_id" id="authorSelect" required></select></div><div><label>Category</label><select class="input" name="category_id" id="categorySelect"></select></div><div><label>Publisher</label><select class="input" name="publisher_id" id="publisherSelect"></select></div><div><label>Edition</label><input class="input" name="edition"></div><div><label>Publish Year</label><input class="input" type="number" name="publish_year"></div><div><label>Price</label><input class="input" type="number" step="0.01" name="price"></div></div></form></div><div class="modalfoot"><button class="btn ghost" onclick="closeModal('bookModal')">Cancel</button><button class="btn primary" onclick="saveBook()">Save Book</button></div></div></div>
+
+<!-- ADD MEMBER MODAL -->
+<div id="memberModal" class="modal"><div class="modalbox"><div class="modalhead"><h3>Add New Member</h3><button class="btn ghost" onclick="closeModal('memberModal')">✕</button></div><div class="modalbody"><form id="memberForm"><div class="formgrid"><div><label>Member Code *</label><input class="input" name="member_code" required></div><div><label>First Name *</label><input class="input" name="first_name" required></div><div><label>Last Name</label><input class="input" name="last_name"></div><div><label>Type</label><select class="input" name="member_type"><option>Student</option><option>Teacher</option><option>Staff</option><option>Other</option></select></div><div><label>Phone *</label><input class="input" name="phone" required></div><div><label>Email</label><input class="input" name="email"></div><div class="full"><label>Address</label><textarea class="input" name="address"></textarea></div></div></form></div><div class="modalfoot"><button class="btn ghost" onclick="closeModal('memberModal')">Cancel</button><button class="btn primary" onclick="saveMember()">Save Member</button></div></div></div>
+
+<!-- ISSUE MODAL -->
+<div id="issueModal" class="modal"><div class="modalbox"><div class="modalhead"><h3>Issue Book</h3><button class="btn ghost" onclick="closeModal('issueModal')">✕</button></div><div class="modalbody"><form id="issueForm"><div class="formgrid"><div class="full"><label>Available Book Copy *</label><select class="input" name="copy_id" id="copySelect" required></select></div><div class="full"><label>Member *</label><select class="input" name="member_id" id="issueMemberSelect" required></select></div><div><label>Issue Date</label><input class="input" type="date" name="issue_date" id="issueDate"></div><div><label>Due Date *</label><input class="input" type="date" name="due_date" id="dueDate" required></div></div></form></div><div class="modalfoot"><button class="btn ghost" onclick="closeModal('issueModal')">Cancel</button><button class="btn primary" onclick="issueBook()">Issue Book</button></div></div></div>
+
+<script>
+const api = '/api';
+const $ = id => document.getElementById(id);
+function showPage(name, btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page-'+name).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');$('title').textContent=name==='transactions'?'Issue / Return':name.charAt(0).toUpperCase()+name.slice(1);if(name==='books')loadBooks();if(name==='members')loadMembers();if(name==='transactions')loadTransactions();if(name==='fines')loadFines();if(name==='master')loadMaster();}
+function closeModal(id){$(id).classList.remove('open')}
+async function get(url){const r=await fetch(api+url);if(!r.ok)throw new Error(await r.text());return r.json()}
+async function post(url,data,method='POST'){const r=await fetch(api+url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const d=await r.json();if(!r.ok)throw new Error(d.error||'Request failed');return d}
+function formData(form){return Object.fromEntries(new FormData(form).entries())}
+function money(v){return '₹'+Number(v||0).toFixed(2)}
+async function loadDashboard(){try{const d=await get('/dashboard');$('sBooks').textContent=d.total_books;$('sCopies').textContent=d.total_copies;$('sMembers').textContent=d.active_members;$('sIssued').textContent=d.issued_books;$('sOverdue').textContent=d.overdue_books;$('sFine').textContent=money(d.pending_fines)}catch(e){console.error(e)}}
+async function loadBooks(){const q=encodeURIComponent($('bookSearch')?.value||'');const data=await get('/books?search='+q);$('booksTable').innerHTML=data.map(x=>`<tr><td>${x.book_id}</td><td><b>${x.title}</b><br><small>${x.isbn||''}</small></td><td>${x.author_name}</td><td>${x.category_name||'-'}</td><td>${x.total_copies}</td><td><span class="badge green">${x.available_copies||0}</span></td><td><span class="badge ${x.issued_copies?'amber':'green'}">${x.issued_copies||0}</span></td></tr>`).join('')}
+async function loadMembers(){const q=encodeURIComponent($('memberSearch')?.value||'');const data=await get('/members?search='+q);$('membersTable').innerHTML=data.map(x=>`<tr><td>${x.member_code}</td><td><b>${x.first_name} ${x.last_name||''}</b></td><td>${x.member_type}</td><td>${x.phone}</td><td>${x.email||'-'}</td><td><span class="badge ${x.status==='Active'?'green':'red'}">${x.status}</span></td></tr>`).join('')}
+async function loadTransactions(){const data=await get('/transactions');$('txTable').innerHTML=data.map(x=>`<tr><td>${x.member_name}<br><small>${x.member_code}</small></td><td>${x.title}</td><td>${x.accession_no}</td><td>${x.issue_date}</td><td>${x.due_date}</td><td><span class="badge ${x.status==='Returned'?'green':x.status==='Overdue'?'red':'amber'}">${x.status}</span></td><td>${x.status!=='Returned'?`<button class="btn primary" onclick="returnBook(${x.transaction_id})">Return</button>`:'—'}</td></tr>`).join('')}
+async function loadFines(){const data=await get('/fines');$('finesTable').innerHTML=data.map(x=>`<tr><td>${x.member_name}</td><td>${x.title}</td><td>${money(x.amount)}</td><td>${money(x.paid_amount)}</td><td><span class="badge ${x.status==='Paid'?'green':'red'}">${x.status}</span></td><td>${x.status!=='Paid'?`<button class="btn primary" onclick="payFine(${x.fine_id},${Number(x.amount)-Number(x.paid_amount)})">Pay</button>`:'—'}</td></tr>`).join('')}
+async function loadMaster(){const [a,c,p]=await Promise.all([get('/authors'),get('/categories'),get('/publishers')]);$('authorsBox').innerHTML=a.map(x=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)">${x.author_name}</div>`).join('');$('categoriesBox').innerHTML=c.map(x=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)">${x.category_name}</div>`).join('');$('authorSelect').innerHTML=a.map(x=>`<option value="${x.author_id}">${x.author_name}</option>`).join('');$('categorySelect').innerHTML='<option value="">-- Select --</option>'+c.map(x=>`<option value="${x.category_id}">${x.category_name}</option>`).join('');$('publisherSelect').innerHTML='<option value="">-- Select --</option>'+p.map(x=>`<option value="${x.publisher_id}">${x.publisher_name}</option>`).join('')}
+function openBookModal(){loadMaster();$('bookModal').classList.add('open')}
+function openMemberModal(){$('memberModal').classList.add('open')}
+async function openIssueModal(){const [copies,members]=await Promise.all([get('/copies'),get('/members')]);const available=copies.filter(x=>x.status==='Available');$('copySelect').innerHTML=available.map(x=>`<option value="${x.copy_id}">${x.title} — ${x.accession_no} (Shelf ${x.shelf_no||'-'})</option>`).join('');$('issueMemberSelect').innerHTML=members.filter(x=>x.status==='Active').map(x=>`<option value="${x.member_id}">${x.member_code} — ${x.first_name} ${x.last_name||''}</option>`).join('');const today=new Date();const due=new Date(today);due.setDate(today.getDate()+14);$('issueDate').value=today.toISOString().slice(0,10);$('dueDate').value=due.toISOString().slice(0,10);$('issueModal').classList.add('open')}
+async function saveBook(){try{const d=formData($('bookForm'));for(const k of ['category_id','publisher_id','publish_year','price'])if(!d[k])d[k]=null;await post('/books',d);closeModal('bookModal');$('bookForm').reset();loadBooks();loadDashboard();alert('Book added successfully.')}catch(e){alert(e.message)}}
+async function saveMember(){try{await post('/members',formData($('memberForm')));closeModal('memberModal');$('memberForm').reset();loadMembers();loadDashboard();alert('Member added successfully.')}catch(e){alert(e.message)}}
+async function issueBook(){try{await post('/issue',formData($('issueForm')));closeModal('issueModal');loadTransactions();loadBooks();loadDashboard();alert('Book issued successfully.')}catch(e){alert(e.message)}}
+async function returnBook(id){if(!confirm('Return this book?'))return;try{await post('/return/'+id,{},'PUT');loadTransactions();loadBooks();loadFines();loadDashboard();alert('Book returned successfully.')}catch(e){alert(e.message)}}
+async function payFine(id,max){const v=prompt('Enter payment amount (max '+max.toFixed(2)+'):',max.toFixed(2));if(v===null)return;try{await post('/fines/'+id+'/pay',{amount:Number(v)},'PUT');loadFines();loadDashboard();alert('Fine payment recorded.')}catch(e){alert(e.message)}}
+$('date').textContent=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});loadDashboard();
+</script>
+</body>
+</html>
