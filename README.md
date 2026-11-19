@@ -1,4 +1,4 @@
-<img width="1693" height="517" alt="image" src="https://github.com/user-attachments/assets/12ab17bf-512a-48ed-9c92-a5ed13793c19" />
+
 # Library Management System
 
 A beginner-friendly **Library Management System** built with:
